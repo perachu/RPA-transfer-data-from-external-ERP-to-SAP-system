@@ -1,0 +1,19 @@
+
+FUNCTION Sub_ConfigDict GLOBAL
+    System.TerminateProcess.TerminateProcessByName ProcessName: $'''EXCEL'''
+    SET dConfig TO {{ }}
+    Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''C:\\RPA Workspace\\SAPxiERP_Project\\config.xlsx''' Visible: False ReadOnly: False Instance=> ExcelIConfigFile
+    Excel.GetAllWorksheets Instance: ExcelIConfigFile Worksheets=> SheetNames
+    LOOP FOREACH CurrentSheet IN SheetNames
+        Excel.SetActiveWorksheet.ActivateWorksheetByName Instance: ExcelIConfigFile Name: CurrentSheet
+        Excel.GetFirstFreeColumnRow Instance: ExcelIConfigFile FirstFreeColumn=> FirstFreeColumn FirstFreeRow=> FirstFreeRow
+        LOOP LoopIndex FROM 2 TO FirstFreeRow - 1 STEP 1
+            Excel.ReadFromExcel.ReadCell Instance: ExcelIConfigFile StartColumn: $'''A''' StartRow: LoopIndex ReadAsText: False CellValue=> DictKey
+            Excel.ReadFromExcel.ReadCell Instance: ExcelIConfigFile StartColumn: $'''C''' StartRow: LoopIndex ReadAsText: False CellValue=> DictValue
+            IF IsNotEmpty(DictKey) THEN
+                SET dConfig[DictKey] TO DictValue
+            END
+        END
+    END
+    Excel.CloseExcel.Close Instance: ExcelIConfigFile
+END FUNCTION

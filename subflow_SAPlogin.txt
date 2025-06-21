@@ -1,0 +1,2 @@
+SAP.SapLogin.SapLogInOptionTerminate Description: $'''02-TMFC : S/4 Quality Assurance [TSQ]''' Client: xxx Username: $'''S6130xxx''' Password: $'''xxx''' Language: $'''EN''' SapInstance=> SAPLogin CurrentSapLoginTerminated=> CurrentSapLoginTerminated
+SAP.StartTransaction SapInstance: SAPLogin TransactionCode: $'''xxxx'''
